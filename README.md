@@ -73,4 +73,3 @@ Sales Dash PRO is a modern, high-performance sales dashboard designed to provide
 #### Frontend
 1. Open `front-end/index.html` in your browser or use a Live Server.
 2. Ensure the backend is running to fetch real-time data.
-
