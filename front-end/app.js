@@ -67,7 +67,7 @@ async function fetchSales() {
         tbody.innerHTML = '';
         
         if (data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" class="text-center">Nenhuma venda encontrada.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="8" class="text-center">Nenhuma venda encontrada.</td></tr>';
             return;
         }
 
@@ -75,15 +75,24 @@ async function fetchSales() {
         data.sort((a,b) => b.id - a.id);
         const recentData = data.slice(0, 10); // Show top 10
 
+        window._salesData = data; // Store globally for easy access in edit
+
         recentData.forEach(sale => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>#${sale.id}</td>
                 <td>${formatDate(sale.sale_date)}</td>
+                <td><strong>${sale.product}</strong></td>
                 <td><span class="category-tag">${sale.category}</span></td>
                 <td>${sale.quantity}</td>
                 <td>${formatCurrency(sale.unit_price)}</td>
                 <td><strong>${formatCurrency(sale.total)}</strong></td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="icon-btn edit-btn" onclick="openEditModal(${sale.id})" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                        <button class="icon-btn delete-btn" onclick="deleteSale(${sale.id})" title="Remover"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </td>
             `;
             tbody.appendChild(tr);
         });
@@ -190,8 +199,12 @@ const modal = document.getElementById('saleModal');
 const newSaleBtn = document.getElementById('newSaleBtn');
 const closeBtn = document.querySelector('.close');
 const saleForm = document.getElementById('saleForm');
+const modalTitle = document.getElementById('modalTitle');
 
 newSaleBtn.addEventListener('click', () => {
+    saleForm.reset();
+    document.getElementById('saleId').value = '';
+    modalTitle.innerText = 'Registrar Nova Venda';
     modal.classList.add('show');
 });
 
@@ -205,15 +218,56 @@ window.addEventListener('click', (e) => {
     }
 });
 
+// Edit & Delete Window Actions
+window.openEditModal = (id) => {
+    const sale = window._salesData?.find(s => s.id === id);
+    if (!sale) return;
+
+    document.getElementById('saleId').value = sale.id;
+    document.getElementById('saleProduct').value = sale.product;
+    document.getElementById('saleCategory').value = sale.category;
+    document.getElementById('saleQuantity').value = sale.quantity;
+    document.getElementById('salePrice').value = sale.unit_price;
+
+    modalTitle.innerText = 'Editar Venda #' + sale.id;
+    modal.classList.add('show');
+};
+
+window.deleteSale = async (id) => {
+    if (!confirm(`Tem certeza que deseja apagar a venda #${id}? Essa ação não poderá ser desfeita.`)) {
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/sales/${id}`, {
+            method: 'DELETE'
+        });
+
+        if (res.ok || res.status === 204) {
+            await fetchKPIs();
+            await fetchCharts();
+            await fetchSales();
+        } else {
+            alert('Não foi possível remover a venda.');
+        }
+    } catch (err) {
+        console.error("Erro ao remover", err);
+        alert('Erro de conexão ao remover.');
+    }
+};
+
 // Form Submission
 saleForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
+    const id = document.getElementById('saleId').value;
+    const product = document.getElementById('saleProduct').value;
     const category = document.getElementById('saleCategory').value;
     const quantity = parseInt(document.getElementById('saleQuantity').value);
     const price = parseFloat(document.getElementById('salePrice').value);
     
     const payload = {
+        product: product,
         category: category,
         quantity: quantity,
         unit_price: price,
@@ -226,8 +280,11 @@ saleForm.addEventListener('submit', async (e) => {
         btn.innerText = 'Salvando...';
         btn.disabled = true;
 
-        const res = await fetch(`${API_URL}/sales`, {
-            method: 'POST',
+        const url = id ? `${API_URL}/sales/${id}` : `${API_URL}/sales`;
+        const method = id ? 'PUT' : 'POST';
+
+        const res = await fetch(url, {
+            method: method,
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -244,7 +301,7 @@ saleForm.addEventListener('submit', async (e) => {
             saleForm.reset();
             modal.classList.remove('show');
         } else {
-            alert('Erro ao registrar venda. Verifique os dados.');
+            alert('Erro ao salvar venda. Verifique os dados.');
         }
 
         btn.innerText = originalText;
