@@ -1,0 +1,240 @@
+﻿..\venv\Scripts\python.
+exe : Traceback (most 
+recent call last):
+No linha:1 caractere:1
++ ..\venv\Scripts\pytho
+n.exe test_db.py 2>&1 
+| Out-File -FilePath 
+outpu ...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (Traceback (mo   
+ st recent call las    
+t)::String) [], Re    
+moteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+  File "C:\Users\Kaike\
+Documents\Sales-Dash\ba
+ck-end\test_db.py", 
+line 4, in <module>
+    Base.metadata.creat
+e_all(bind=engine)
+    ~~~~~~~~~~~~~~~~~~~
+~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Kaike\
+Documents\Sales-Dash\ve
+nv\Lib\site-packages\sq
+lalchemy\sql\schema.py"
+, line 5931, in 
+create_all
+    
+bind._run_ddl_visitor(
+    
+~~~~~~~~~~~~~~~~~~~~~^
+        
+ddl.SchemaGenerator, 
+self, 
+checkfirst=checkfirst, 
+tables=tables
+        ^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^
+    )
+    ^
+  File "C:\Users\Kaike\
+Documents\Sales-Dash\ve
+nv\Lib\site-packages\sq
+lalchemy\engine\base.py
+", line 3267, in 
+_run_ddl_visitor
+    with self.begin() 
+as conn:
+         ~~~~~~~~~~^^
+  File "C:\Users\Kaike\
+AppData\Local\Programs\
+Python\Python313\Lib\co
+ntextlib.py", line 
+141, in __enter__
+    return 
+next(self.gen)
+  File "C:\Users\Kaike\
+Documents\Sales-Dash\ve
+nv\Lib\site-packages\sq
+lalchemy\engine\base.py
+", line 3257, in begin
+    with 
+self.connect() as conn:
+         ~~~~~~~~~~~~^^
+  File "C:\Users\Kaike\
+Documents\Sales-Dash\ve
+nv\Lib\site-packages\sq
+lalchemy\engine\base.py
+", line 3293, in 
+connect
+    return self._connec
+tion_cls(self)
+           ~~~~~~~~~~~~
+~~~~~~~~^^^^^^
+  File "C:\Users\Kaike\
+Documents\Sales-Dash\ve
+nv\Lib\site-packages\sq
+lalchemy\engine\base.py
+", line 143, in 
+__init__
+    
+self._dbapi_connection 
+= 
+engine.raw_connection()
+                       
+      
+~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Kaike\
+Documents\Sales-Dash\ve
+nv\Lib\site-packages\sq
+lalchemy\engine\base.py
+", line 3317, in 
+raw_connection
+    return 
+self.pool.connect()
+           
+~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Kaike\
+Documents\Sales-Dash\ve
+nv\Lib\site-packages\sq
+lalchemy\pool\base.py",
+ line 448, in connect
+    return _ConnectionF
+airy._checkout(self)
+           ~~~~~~~~~~~~
+~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Kaike\
+Documents\Sales-Dash\ve
+nv\Lib\site-packages\sq
+lalchemy\pool\base.py",
+ line 1272, in 
+_checkout
+    fairy = _Connection
+Record.checkout(pool)
+  File "C:\Users\Kaike\
+Documents\Sales-Dash\ve
+nv\Lib\site-packages\sq
+lalchemy\pool\base.py",
+ line 712, in checkout
+    rec = 
+pool._do_get()
+  File "C:\Users\Kaike\
+Documents\Sales-Dash\ve
+nv\Lib\site-packages\sq
+lalchemy\pool\impl.py",
+ line 177, in _do_get
+    with 
+util.safe_reraise():
+         
+~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Kaike\
+Documents\Sales-Dash\ve
+nv\Lib\site-packages\sq
+lalchemy\util\langhelpe
+rs.py", line 121, in 
+__exit__
+    raise exc_value.wit
+h_traceback(exc_tb)
+  File "C:\Users\Kaike\
+Documents\Sales-Dash\ve
+nv\Lib\site-packages\sq
+lalchemy\pool\impl.py",
+ line 175, in _do_get
+    return self._create
+_connection()
+           ~~~~~~~~~~~~
+~~~~~~~~~~~^^
+  File "C:\Users\Kaike\
+Documents\Sales-Dash\ve
+nv\Lib\site-packages\sq
+lalchemy\pool\base.py",
+ line 389, in 
+_create_connection
+    return 
+_ConnectionRecord(self)
+  File "C:\Users\Kaike\
+Documents\Sales-Dash\ve
+nv\Lib\site-packages\sq
+lalchemy\pool\base.py",
+ line 674, in __init__
+    self.__connect()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\Kaike\
+Documents\Sales-Dash\ve
+nv\Lib\site-packages\sq
+lalchemy\pool\base.py",
+ line 900, in __connect
+    with 
+util.safe_reraise():
+         
+~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Kaike\
+Documents\Sales-Dash\ve
+nv\Lib\site-packages\sq
+lalchemy\util\langhelpe
+rs.py", line 121, in 
+__exit__
+    raise exc_value.wit
+h_traceback(exc_tb)
+  File "C:\Users\Kaike\
+Documents\Sales-Dash\ve
+nv\Lib\site-packages\sq
+lalchemy\pool\base.py",
+ line 896, in __connect
+    
+self.dbapi_connection 
+= connection = pool._in
+voke_creator(self)
+                       
+                  ~~~~~
+~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Kaike\
+Documents\Sales-Dash\ve
+nv\Lib\site-packages\sq
+lalchemy\engine\create.
+py", line 667, in 
+connect
+    return dialect.conn
+ect(*cargs_tup, 
+**cparams)
+           ~~~~~~~~~~~~
+~~~^^^^^^^^^^^^^^^^^^^^
+^^^
+  File "C:\Users\Kaike\
+Documents\Sales-Dash\ve
+nv\Lib\site-packages\sq
+lalchemy\engine\default
+.py", line 630, in 
+connect
+    return self.loaded_
+dbapi.connect(*cargs, 
+**cparams)  # type: 
+ignore[no-any-return]  
+# NOQA: E501
+           ~~~~~~~~~~~~
+~~~~~~~~~~~~~^^^^^^^^^^
+^^^^^^^^^
+  File "C:\Users\Kaike\
+Documents\Sales-Dash\ve
+nv\Lib\site-packages\ps
+ycopg2\__init__.py", 
+line 135, in connect
+    conn = 
+_connect(dsn, connectio
+n_factory=connection_fa
+ctory, **kwasync)
+UnicodeDecodeError: 
+'utf-8' codec can't 
+decode byte 0xe3 in 
+position 98: invalid 
+continuation byte
