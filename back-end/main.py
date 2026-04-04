@@ -5,6 +5,7 @@ from database import get_db, engine, Base
 from models.sales import Sale
 from schemas.sales import SaleCreate, SaleUpdate, SaleResponse
 from typing import List
+from sqlalchemy import func, extract
 
 Base.metadata.create_all(bind=engine)
 
@@ -60,3 +61,45 @@ def delete_sale(sale_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Venda não encontrada")
     db.delete(sale)
     db.commit()
+
+@app.get("/analytics/kpis")
+def get_kpis(db: Session = Depends(get_db)):
+    result = db.query(
+        func.count(Sale.id).label("total_sales"),
+        func.sum(Sale.total).label("total_revenue"),
+        func.avg(Sale.unit_price).label("avg_ticket")
+    ).first()
+
+    return {
+        "total_sales": result.total_sales or 0,
+        "total_revenue": round(result.total_revenue or 0, 2),
+        "avg_ticket": round(result.avg_ticket or 0, 2)
+    }
+
+@app.get("/analytics/sales-by-month")
+def get_sales_by_month(db: Session = Depends(get_db)):
+    results = db.query(
+        extract("year", Sale.sale_date).label("year"),
+        extract("month", Sale.sale_date).label("month"),
+        func.sum(Sale.total).label("revenue")
+    ).group_by("year", "month").order_by("year", "month").all()
+
+    return [
+        {
+            "label": f"{int(r.month):02d}/{int(r.year)}",
+            "revenue": round(r.revenue, 2)
+        }
+        for r in results
+    ]
+
+@app.get("/analytics/sales-by-category")
+def get_sales_by_category(db: Session = Depends(get_db)):
+    results = db.query(
+        Sale.category,
+        func.sum(Sale.total).label("revenue")
+    ).group_by(Sale.category).order_by(func.sum(Sale.total).desc()).all()
+
+    return [
+        {"category": r.category, "revenue": round(r.revenue, 2)}
+        for r in results
+    ]
