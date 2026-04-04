@@ -318,3 +318,38 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchCharts();
     fetchSales();
 });
+
+// Database Reset
+const resetDbBtn = document.getElementById('resetDbBtn');
+if (resetDbBtn) {
+    resetDbBtn.addEventListener('click', async () => {
+        if (!confirm('ATENÇÃO: Deseja apagar todos os dados do banco de dados? Esta ação é irreversível.')) {
+            return;
+        }
+        
+        try {
+            const originalText = resetDbBtn.innerHTML;
+            resetDbBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Limpando...';
+            resetDbBtn.disabled = true;
+
+            const res = await fetch(`${API_URL}/sales/reset/all`, {
+                method: 'DELETE'
+            });
+
+            if (res.ok || res.status === 204) {
+                await fetchKPIs();
+                await fetchCharts();
+                await fetchSales();
+                alert('Banco de dados limpo com sucesso!');
+            } else {
+                alert('Erro ao limpar os dados do banco.');
+            }
+
+            resetDbBtn.innerHTML = originalText;
+            resetDbBtn.disabled = false;
+        } catch (err) {
+            console.error('Erro ao resetar DB', err);
+            alert('Erro de conexão ao tentar limpar o banco de dados.');
+        }
+    });
+}
