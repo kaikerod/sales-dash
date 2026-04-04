@@ -6,6 +6,7 @@ from models.sales import Sale
 from schemas.sales import SaleCreate, SaleUpdate, SaleResponse
 from typing import List
 from sqlalchemy import func, extract
+from sqlalchemy import text
 
 Base.metadata.create_all(bind=engine)
 
@@ -103,3 +104,8 @@ def get_sales_by_category(db: Session = Depends(get_db)):
         {"category": r.category, "revenue": round(r.revenue, 2)}
         for r in results
     ]
+
+@app.delete("/sales/reset/all", status_code=204)
+def reset_sales(db: Session = Depends(get_db)):
+    db.execute(text("TRUNCATE TABLE sales RESTART IDENTITY"))
+    db.commit()
