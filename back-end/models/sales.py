@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Float, Date
-from back_end.database import Base  # ajuste o import conforme como você roda o projeto
+from back_end.database import Base
 
 
 class Sale(Base):
