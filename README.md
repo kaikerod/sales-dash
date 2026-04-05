@@ -1,4 +1,4 @@
-# 📊 Sales Dash PRO
+# 📊 Sales Dash
 
 [Português](#português) | [English](#english)
 
