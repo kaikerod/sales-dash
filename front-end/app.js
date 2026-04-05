@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8000';
+const API_URL = 'https://sales-dash-api.onrender.com';
 
 // Global variables for Chart instances
 let revenueChart = null;
