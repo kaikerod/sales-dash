@@ -93,5 +93,3 @@ The project is configured for automatic deployment on **Render**, integrating th
 #### Frontend
 1. Open `front-end/index.html` in your browser or use a Live Server.
 2. Ensure `API_URL` in `front-end/app.js` is pointing to the correct server (local or production).
-
----
