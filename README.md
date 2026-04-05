@@ -95,4 +95,3 @@ The project is configured for automatic deployment on **Render**, integrating th
 2. Ensure `API_URL` in `front-end/app.js` is pointing to the correct server (local or production).
 
 ---
-*Created with ❤️ by Antigravity*
